@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <iomanip>
 
 #include "common/util/hash_util.h"
 
@@ -16,6 +17,12 @@ namespace bustub {
 
 template <typename KeyType>
 class HyperLogLog {
+
+ private:
+  int16_t n_bits_;
+  size_t num_buckets_;
+  std::vector<uint8_t> registers_;
+
   /** @brief Constant for HLL. */
   static constexpr double CONSTANT = 0.79402;
 
