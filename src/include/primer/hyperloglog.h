@@ -40,7 +40,7 @@ class HyperLogLog {
   }
 
   /**
-   * @brief Ddds a value into the HyperLogLog.
+   * @brief Adds a value into the HyperLogLog.
    *
    * @param[in] val - value that's added into hyperloglog
    */
