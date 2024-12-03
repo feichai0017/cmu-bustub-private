@@ -73,6 +73,12 @@ class HyperLogLogPresto {
     return 0;
   }
 
+  /** @brief Number of initial bits */
+  int16_t n_bits_;
+
+  /** @brief Number of buckets (2^n_bits_) */
+  size_t num_buckets_;
+
   /** @brief Structure holding dense buckets (or also known as registers). */
   std::vector<std::bitset<DENSE_BUCKET_SIZE>> dense_bucket_;
 
@@ -81,8 +87,6 @@ class HyperLogLogPresto {
 
   /** @brief Storing cardinality value */
   uint64_t cardinality_;
-
-  // TODO(student) - can add more data structures as required
 };
 
 }  // namespace bustub

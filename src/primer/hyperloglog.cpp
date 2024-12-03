@@ -4,10 +4,7 @@ namespace bustub {
 
 template <typename KeyType>
 HyperLogLog<KeyType>::HyperLogLog(int16_t n_bits)
-    : n_bits_(n_bits),
-      num_buckets_(1 << n_bits),
-      registers_(num_buckets_, 0),
-      cardinality_(0) {
+    : n_bits_(n_bits), num_buckets_(1 << n_bits), registers_(num_buckets_, 0), cardinality_(0), mutex_() {
   if (n_bits < 0) {
     num_buckets_ = 0;
   }
@@ -47,6 +44,9 @@ auto HyperLogLog<KeyType>::PositionOfLeftmostOne(const std::bitset<BITSET_CAPACI
 template <typename KeyType>
 auto HyperLogLog<KeyType>::AddElem(KeyType val) -> void {
   std::cout << "\nAdding element: " << val << std::endl;
+
+  // add write lock
+  std::unique_lock lock(mutex_);
 
   hash_t calculate_hash = CalculateHash(val);
   std::cout << "Hash: " << calculate_hash << std::endl;
@@ -88,9 +88,8 @@ auto HyperLogLog<KeyType>::ComputeCardinality() -> void {
   for (size_t i = 0; i < registers_.size(); i++) {
     double term = std::pow(2.0, -static_cast<double>(registers_[i]));
     sum += term;
-    std::cout << "Register[" << i << "] = " << (int)registers_[i]
-              << " -> 2^(-" << (int)registers_[i] << ") = "
-              << std::fixed << std::setprecision(6) << term << std::endl;
+    std::cout << "Register[" << i << "] = " << (int)registers_[i] << " -> 2^(-" << (int)registers_[i]
+              << ") = " << std::fixed << std::setprecision(6) << term << std::endl;
   }
   std::cout << "Sum: " << sum << std::endl;
 
